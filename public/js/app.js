@@ -18,11 +18,19 @@ class App extends React.Component{
   }
 
   render(){
-
+    // debugger;
     return(
-        <Text style={styles.welcome}>
-          Risk: {this.props.state.riskLevel}
-        </Text>
+        <View>
+          <Text style={styles.welcome}>
+            Risk: {this.props.riskLevel}
+          </Text>
+          <TextInput
+            style={{ backgroundColor: '#ededed', height: 60 }}
+            editable = {true}
+            maxLength = {40}
+            onChangeText={(num) => this.props.changeRiskLevel(num)}
+            value={this.props.riskLevel} />
+        </View>
       )
   }
 }
@@ -47,20 +55,20 @@ const styles = StyleSheet.create({
   },
 });
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     changeRiskLevel:  (num) => dispatch(RiskActions(num)),
-//     calcRedistribution: (funds)=> dispatch(FundsActions(funds))
-//   }
-// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeRiskLevel:  (num) => dispatch(RiskActions(num)),
+    calcRedistribution: (funds)=> dispatch(FundsActions(funds))
+  }
+}
 
-// const mapStateToProps = (state) => {
-//   return state;
-// }
+const mapStateToProps = (state) => {
+  return state;
+}
 
-// const DefaultApp = connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(App)
+const DefaultApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
 
-export default App;
+export default DefaultApp;
