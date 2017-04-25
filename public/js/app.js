@@ -10,7 +10,7 @@ import devToolsEnhancer from 'remote-redux-devtools';
 import TabBar from './tabs';
 import { connect } from 'react-redux';
 import { RiskActions, FundsActions } from './actions';
-
+import Chart from './Chart'
 
 class App extends React.Component{
   constructor(props){
@@ -18,19 +18,8 @@ class App extends React.Component{
   }
 
   render(){
-    // debugger;
     return(
-        <View>
-          <Text style={styles.welcome}>
-            Risk: {this.props.riskLevel}
-          </Text>
-          <TextInput
-            style={{ backgroundColor: '#ededed', height: 60 }}
-            editable = {true}
-            maxLength = {40}
-            onChangeText={(num) => this.props.changeRiskLevel(num)}
-            value={this.props.riskLevel} />
-        </View>
+        <TabBar calcRedistribution={this.props.calcRedistribution} riskLevel={this.props.riskLevel} changeRiskLevel={this.props.changeRiskLevel} funds={this.props.funds}/>
       )
   }
 }
@@ -52,7 +41,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
-  },
+  }
 });
 
 const mapDispatchToProps = (dispatch) => {
