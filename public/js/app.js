@@ -10,7 +10,8 @@ import devToolsEnhancer from 'remote-redux-devtools';
 import TabBar from './tabs';
 import { connect } from 'react-redux';
 import { RiskActions, FundsActions } from './actions';
-
+import Chart from './Chart'
+import FundsChart from './FundsChart'
 
 class App extends React.Component{
   constructor(props){
@@ -18,11 +19,8 @@ class App extends React.Component{
   }
 
   render(){
-
     return(
-        <Text style={styles.welcome}>
-          Risk: {this.props.state.riskLevel}
-        </Text>
+        <TabBar calcRedistribution={this.props.calcRedistribution} riskLevel={this.props.riskLevel} changeRiskLevel={this.props.changeRiskLevel} funds={this.props.funds}/>
       )
   }
 }
@@ -44,23 +42,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
-  },
+  }
 });
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     changeRiskLevel:  (num) => dispatch(RiskActions(num)),
-//     calcRedistribution: (funds)=> dispatch(FundsActions(funds))
-//   }
-// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    changeRiskLevel:  (num) => dispatch(RiskActions(num)),
+    calcRedistribution: (funds)=> dispatch(FundsActions(funds))
+  }
+}
 
-// const mapStateToProps = (state) => {
-//   return state;
-// }
+const mapStateToProps = (state) => {
+  return state;
+}
 
-// const DefaultApp = connect(
-//   mapStateToProps,
-//   mapDispatchToProps
-// )(App)
+const DefaultApp = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
 
-export default App;
+export default DefaultApp;

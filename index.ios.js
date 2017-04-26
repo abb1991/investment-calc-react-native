@@ -16,14 +16,10 @@ const store = configureStore();
 
 export default class InvestmentCalc extends Component {
 
-  constructor(props){
-    super(props);
-  }
-
   render() {
     return (
       <Provider store={store}>
-        <App state={store.getState()} />
+        <App />
       </Provider>
     );
   }
