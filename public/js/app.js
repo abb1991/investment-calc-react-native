@@ -11,6 +11,7 @@ import TabBar from './tabs';
 import { connect } from 'react-redux';
 import { RiskActions, FundsActions } from './actions';
 import Chart from './Chart'
+import FundsChart from './FundsChart'
 
 class App extends React.Component{
   constructor(props){

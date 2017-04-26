@@ -5,6 +5,11 @@ const CALC = require('./InvestmentDistribution.js')
 export default class CurrentPortfolio extends React.Component {
   constructor(props){
     super(props);
+    this.state = {
+      showFocus: false
+    }
+    this.focus = this.focus.bind(this)
+    this._fundsInput = this._fundsInput.bind(this)
   }
 
 
@@ -15,54 +20,42 @@ rebalance(obj){
   this.props.calcRedistribution(funds)
 }
 
+focus(){
+  this.setState({ showFocus: true})
+}
 
+_fundsInput = (name, fullName) => {
+  var obj = {}
+  return (
+        <View style={{height: 80}}>
+          <Text style={styles.legend} >{fullName}</Text>
+          <TextInput
+              style={ this.state.showFocus ? styles.inputTextFocus : styles.inputText}
+              editable = {true}
+              keyboardType = {'number-pad'}
+              onFocus={this.focus}
+              maxLength = {40}
+              placeholder={'.00'}
+              onChangeText={(num) => {
+                obj[name] = num
+                this.rebalance(obj)
+                }
+              }
+               />
+        </View>
+    )
+}
 
   render(){
-    var f = this.props.funds || {}
     return(
-      <View style={{flex: 1}}>
-        <Text style={styles.legend} >Cash</Text>
-        <TextInput
-            style={{ backgroundColor: '#ededed', height: 60 }}
-            editable = {true}
-            maxLength = {40}
-            onChangeText={(num) => this.rebalance({cash: num})}
-             />
-        <Text style={styles.legend}>Index Funds</Text>
-        <TextInput
-            style={{ backgroundColor: '#ededed', height: 60 }}
-            editable = {true}
-            maxLength = {40}
-            onChangeText={(num) => this.rebalance({index: num})}
-             />
-        <Text style={styles.legend}>Gold</Text>
-        <TextInput
-            style={{ backgroundColor: '#ededed', height: 60 }}
-            editable = {true}
-            maxLength = {40}
-            onChangeText={(num) => this.rebalance({gold: num})}
-             />
-        <Text style={styles.legend}>Reits</Text>
-        <TextInput
-            style={{ backgroundColor: '#ededed', height: 60 }}
-            editable = {true}
-            maxLength = {40}
-            onChangeText={(num) => this.rebalance({reits: num})}
-             />
-        <Text style={styles.legend}>International Equity</Text>
-        <TextInput
-            style={{ backgroundColor: '#ededed', height: 60 }}
-            editable = {true}
-            maxLength = {40}
-            onChangeText={(num) => this.rebalance({intlEquity: num})}
-             />
-        <Text style={styles.legend}>Other</Text>
-        <TextInput
-            style={{ backgroundColor: '#ededed', height: 60 }}
-            editable = {true}
-            maxLength = {40}
-            onChangeText={(num) => this.rebalance({other: num})}
-             />
+      <View style={styles.container}>
+        <Text style={styles.header} >Enter dollar amounts for current investments to recieve rebalanced portfolio</Text>
+        {this._fundsInput('cash', 'Cash')}
+        {this._fundsInput('index', 'Index Funds')}
+        {this._fundsInput('gold', 'Gold')}
+        {this._fundsInput('intlEquity', 'International Equity')}
+        {this._fundsInput('reits', 'REITs')}
+        {this._fundsInput('other', 'Other')}
       </View>
     )
   }
@@ -70,8 +63,37 @@ rebalance(obj){
 }
 
 var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: '#4C6279',
+  },
   legend: {
     textAlign: 'center',
-    color: '#333333',
+    color: 'white',
+    height: 40,
+    textDecorationLine: 'underline',
+    paddingTop: 10,
+    fontSize: 16,
   },
+  inputText: {
+    backgroundColor: '#CED0D3',
+    height: 50,
+    textAlign: 'right',
+    paddingRight: 40,
+    marginHorizontal: 10,
+  },
+  inputTextFocus: {
+    backgroundColor: 'white',
+    height: 50,
+    textAlign: 'right',
+    paddingRight: 40,
+    marginHorizontal: 10,
+  },
+  header: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: 'white',
+    fontWeight: '600',
+  }
 });

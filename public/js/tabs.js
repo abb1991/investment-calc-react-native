@@ -7,8 +7,12 @@ import {
   Slider
 } from 'react-native';
 import Chart from './Chart';
+import FundsChart from './FundsChart'
 import CurrentPortfolio from './CurrentPortfolio'
+import {base64IconFunds, base64IconPieChart, base64IconBarChart} from './base64icons'
 const CALC = require('./InvestmentDistribution.js')
+
+
 
 class TabBar extends React.Component {
   // static title = '<TabBarIOS>';
@@ -16,9 +20,7 @@ class TabBar extends React.Component {
   // static displayName = 'TabBarExample';
 
   state = {
-    selectedTab: 'redTab',
-    notifCount: 0,
-    presses: 0,
+    selectedTab: 'blueTab'
   };
 
   risk(val){
@@ -34,7 +36,6 @@ class TabBar extends React.Component {
     return (
       <View style={[styles.tabContent]}>
         <Chart calcRedistribution={this.props.calcRedistribution} funds={this.props.funds} riskLevel={this.props.riskLevel} />
-
         <Slider
             style={styles.slider}
             minimumValue={0}
@@ -45,57 +46,59 @@ class TabBar extends React.Component {
     );
   };
 
-  _renderContentRecommended = (color: string, pageText: string, num?: number) => {
+  _renderContentCurrent = (color: string, pageText: string, num?: number) => {
     return (
       <CurrentPortfolio calcRedistribution={this.props.calcRedistribution} riskLevel={this.props.riskLevel} funds={this.props.funds} />
+    );
+  };
+
+  _renderContentRecommended = (color: string, pageText: string, num?: number) => {
+    return (
+      <FundsChart funds={this.props.funds} />
     );
   };
 
   render() {
     return (
       <TabBarIOS
-        unselectedTintColor="yellow"
-        tintColor="white"
-        unselectedItemTintColor="red"
-        barTintColor="darkslateblue"
+        unselectedTintColor='white'
+        tintColor="red"
+        unselectedItemTintColor="white"
+        barTintColor="#002040"
         style={{flex: 1, height: 200}} >
         <TabBarIOS.Item
+          title="Funds"
+          icon={{uri: base64IconFunds(), scale: 4}}
+          selected={this.state.selectedTab === 'redTab'}
+          onPress={() => {
+            this.setState({
+              selectedTab: 'redTab'
+            });
+          }}>
+          {this._renderContentCurrent()}
+        </TabBarIOS.Item>
+        <TabBarIOS.Item
           title="Risk Level"
-          // icon={':0'}
+          style={{backgroundColor: '#E5E8EB'}}
+          icon={{uri:base64IconPieChart(), scale: 8}}
           selected={this.state.selectedTab === 'blueTab'}
           onPress={() => {
             this.setState({
               selectedTab: 'blueTab',
             });
           }}>
-          {this._renderContentChart('#414A8C', 'Risk Level')}
+          {this._renderContentChart()}
         </TabBarIOS.Item>
         <TabBarIOS.Item
-          systemIcon="history"
-          badge={this.state.notifCount > 0 ? this.state.notifCount : undefined}
-          badgeColor="black"
-          selected={this.state.selectedTab === 'redTab'}
-          onPress={() => {
-            this.setState({
-              selectedTab: 'redTab',
-              notifCount: this.state.notifCount + 1,
-            });
-          }}>
-          {this._renderContentRecommended('#783E33', 'Red Tab', this.state.notifCount)}
-        </TabBarIOS.Item>
-        <TabBarIOS.Item
-          // icon={require('./flux.png')}
-          // selectedIcon={require('./relay.png')}
-          renderAsOriginal
-          title="More"
+          title="Recommendations"
+          icon={{uri:base64IconBarChart(), scale: 13}}
           selected={this.state.selectedTab === 'greenTab'}
           onPress={() => {
             this.setState({
-              selectedTab: 'greenTab',
-              presses: this.state.presses + 1
+              selectedTab: 'greenTab'
             });
           }}>
-          {this._renderContentChart('#21551C', 'Green Tab', this.state.presses)}
+          {this._renderContentRecommended('#21551C', 'Green Tab')}
         </TabBarIOS.Item>
       </TabBarIOS>
     );
@@ -121,7 +124,5 @@ var styles = StyleSheet.create({
     marginBottom: 5,
   }
 });
-
-
 
 export default TabBar;
