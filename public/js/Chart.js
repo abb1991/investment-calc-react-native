@@ -97,7 +97,7 @@ var styles = StyleSheet.create({
   legend: {
     textAlign: 'center',
     color: '#333333',
-    fontSize: 14,
+    fontSize: 18,
     lineHeight: 25,
   },
   cash: {

@@ -15,9 +15,11 @@ const CALC = require('./InvestmentDistribution.js')
 
 
 class TabBar extends React.Component {
-  // static title = '<TabBarIOS>';
-  // static description = 'Tab-based navigation.';
-  // static displayName = 'TabBarExample';
+  constructor(props){
+    super(props);
+
+    this.risk = this.risk.bind(this)
+  }
 
   state = {
     selectedTab: 'blueTab'
@@ -41,7 +43,9 @@ class TabBar extends React.Component {
             minimumValue={0}
             maximumValue={10}
             step={1}
+            value={this.props.riskLevel}
             onValueChange={(val) => this.risk(val)} />
+        <Text style={styles.textRiskLevel}>Risk Level</Text>
       </View>
     );
   };
@@ -54,7 +58,7 @@ class TabBar extends React.Component {
 
   _renderContentRecommended = (color: string, pageText: string, num?: number) => {
     return (
-      <FundsChart funds={this.props.funds} />
+        <FundsChart risk={this.risk} funds={this.props.funds} riskLevel={this.props.riskLevel} />
     );
   };
 
@@ -115,13 +119,16 @@ var styles = StyleSheet.create({
     margin: 50,
   },
   slider: {
-    flex: 1,
+    // flex: 1,
     width: 300
   },
   legend: {
     textAlign: 'center',
     color: '#333333',
     marginBottom: 5,
+  },
+  textRiskLevel: {
+    padding: 0,
   }
 });
 

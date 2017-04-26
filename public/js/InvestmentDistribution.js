@@ -64,8 +64,12 @@ module.exports =  {
     let total = _.reduce(arr, (start, num) => { return start + num; }, 0);
     let recommended = this.adjust(funds, risk);
     for(var f in funds) {
+        let t
         // create new properties on the adjustments object with the specific investment type as a key, and the difference between the ideal and current invesment as its value
-        let t = recommended[f] - funds[f]
+        t = recommended[f] - funds[f]
+        if(!recommended[f]){
+            t = 0 - funds[f]
+        }
         if(!isNaN(t)){
             adjustments[f] = t;
         }
